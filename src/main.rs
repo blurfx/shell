@@ -1,5 +1,7 @@
 use std::io::{stdin, stdout, Write};
 use std::process::Command;
+use std::path::Path;
+use std::env;
 
 fn main() {
     loop {
@@ -15,6 +17,13 @@ fn main() {
             "exit" => {
                 return;
             }
+            "cd" => {
+                let dir = args.peekable().peek().map_or("/", |x| *x);
+                let root = Path::new(dir);
+                if let Err(e) = env::set_current_dir(&root) {
+                    eprintln!("{}", e);
+                }
+            }
             command => {
                 let mut command_result = Command::new(command)
                     .args(args)
@@ -25,7 +34,7 @@ fn main() {
                         child.wait();
                     },
                     Err(e) => {
-                        println!("{}", e.to_string());
+                        eprintln!("{}", e);
                     }
                 }
             }
