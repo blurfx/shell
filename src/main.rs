@@ -11,6 +11,9 @@ fn main() {
         stdin().read_line(&mut input).unwrap();
 
         let mut args = input.trim().split_whitespace();
+        if args.clone().count() == 0usize {
+            continue
+        }
         let command = args.next().unwrap();
 
         match command {
