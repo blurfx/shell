@@ -8,8 +8,10 @@ fn main() {
         let mut input = String::new();
         stdin().read_line(&mut input).unwrap();
 
-        let command = input.trim();
+        let mut args = input.trim().split_whitespace();
+        let command = args.next().unwrap();
         let mut child = Command::new(command)
+            .args(args)
             .spawn()
             .unwrap();
         child.wait();
