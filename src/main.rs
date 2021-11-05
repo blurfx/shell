@@ -11,19 +11,23 @@ fn main() {
         let mut args = input.trim().split_whitespace();
         let command = args.next().unwrap();
 
-        if command == "exit" {
-            break;
-        }
-
-        let mut command = Command::new(command)
-            .args(args)
-            .spawn();
         match command {
-            Ok(mut child) => {
-                child.wait();
-            },
-            Err(e) => {
-                println!("{}", e.to_string());
+            "exit" => {
+                return;
+            }
+            command => {
+                let mut command_result = Command::new(command)
+                    .args(args)
+                    .spawn();
+
+                match command_result {
+                    Ok(mut child) => {
+                        child.wait();
+                    },
+                    Err(e) => {
+                        println!("{}", e.to_string());
+                    }
+                }
             }
         }
     }
