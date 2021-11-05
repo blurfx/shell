@@ -10,10 +10,21 @@ fn main() {
 
         let mut args = input.trim().split_whitespace();
         let command = args.next().unwrap();
-        let mut child = Command::new(command)
+
+        if command == "exit" {
+            break;
+        }
+
+        let mut command = Command::new(command)
             .args(args)
-            .spawn()
-            .unwrap();
-        child.wait();
+            .spawn();
+        match command {
+            Ok(mut child) => {
+                child.wait();
+            },
+            Err(e) => {
+                println!("{}", e.to_string());
+            }
+        }
     }
 }
