@@ -1,4 +1,4 @@
-use std::io::{stdin, stdout};
+use std::io::{stdin, stdout, Write};
 use std::process::{Child, Command, Stdio};
 use std::path::Path;
 
@@ -24,6 +24,17 @@ fn main() {
             match command {
                 "exit" => {
                     return
+                }
+                "pwd" => {
+                    let dir = env::current_dir();
+                    match dir {
+                        Ok(dir) => {
+                            println!("{}", dir.display().to_string());
+                        }
+                        Err(e) => {
+                            eprintln!("{}", e);
+                        }
+                    }
                 }
                 "cd" => {
                     let dir = args.peekable().peek().map_or("/", |x| *x);
